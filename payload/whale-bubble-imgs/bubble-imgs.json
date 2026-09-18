@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "images": [
+    {
+      "id": "bimg_yuuka_bubble",
+      "name": "气泡模板·逆转",
+      "format": "png",
+      "createdAt": 1789736592281
+    },
+    {
+      "id": "bimg_yuuka_face1",
+      "name": "优香·头像1",
+      "format": "png",
+      "createdAt": 1789736592281
+    },
+    {
+      "id": "bimg_yuuka_face2",
+      "name": "优香·头像2",
+      "format": "png",
+      "createdAt": 1789736592281
+    },
+    {
+      "id": "bimg_yuuka_face3",
+      "name": "优香·头像3",
+      "format": "png",
+      "createdAt": 1789736592281
+    },
+    {
+      "id": "bimg_yuuka_bill",
+      "name": "账单优香",
+      "format": "png",
+      "createdAt": 1789736592281
+    }
+  ]
+}

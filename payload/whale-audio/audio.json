@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "groups": [
+    {
+      "id": "group_yuuka",
+      "name": "优香",
+      "press": "audio_yuuka",
+      "release": "",
+      "pinnedAt": null,
+      "createdAt": 1789736592281
+    }
+  ],
+  "fragments": [
+    {
+      "id": "audio_yuuka",
+      "name": "优香·按下",
+      "createdAt": 1789736592281
+    }
+  ]
+}

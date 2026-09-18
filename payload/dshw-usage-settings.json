@@ -1,0 +1,203 @@
+{
+  "alert": {
+    "on": true,
+    "lines": [
+      {
+        "type": "text",
+        "text": "Sensei，您的DS余额只剩",
+        "size": 5,
+        "bold": true,
+        "row": 1
+      },
+      {
+        "type": "text",
+        "text": "¥{below}",
+        "size": 5,
+        "bold": true,
+        "rgb": "rouge",
+        "color": "",
+        "bgRgb": "",
+        "bg": "",
+        "row": 1
+      },
+      {
+        "type": "text",
+        "text": "啦~",
+        "size": 5,
+        "bold": true,
+        "row": 1
+      },
+      {
+        "type": "image",
+        "imgId": "bimg_yuuka_bill",
+        "size": 6,
+        "imgScale": 0.4
+      },
+      {
+        "type": "link",
+        "text": ">> 经 费 补 充 <<",
+        "url": "https://platform.deepseek.com/top_up",
+        "size": 1,
+        "color": "#ffffff",
+        "rgb": "",
+        "bgRgb": "indigo",
+        "bg": "",
+        "bold": true,
+        "ul": false
+      }
+    ],
+    "autoClose": false,
+    "ttlSec": 6,
+    "below": 10
+  },
+  "budget": {
+    "on": true,
+    "lines": [
+      {
+        "type": "text",
+        "text": "Sensei，今天的支出已经达到",
+        "size": 6,
+        "bold": true,
+        "row": 1
+      },
+      {
+        "type": "text",
+        "text": "¥{amount}",
+        "size": 7,
+        "bold": true,
+        "row": 1,
+        "rgb": "rouge",
+        "color": "",
+        "italic": false,
+        "bgRgb": "",
+        "bg": ""
+      },
+      {
+        "type": "text",
+        "text": "啦，请控制一下预算哦~",
+        "size": 6,
+        "bold": true,
+        "row": 1
+      }
+    ],
+    "autoClose": false,
+    "ttlSec": 6,
+    "amount": 10
+  },
+  "turnCost": {
+    "lines": [
+      {
+        "type": "text",
+        "text": "这轮也记下了",
+        "size": 8,
+        "bold": true
+      },
+      {
+        "type": "text",
+        "text": "¥ {cost}",
+        "size": 24,
+        "bold": true,
+        "color": "#e0433f"
+      },
+      {
+        "type": "today",
+        "size": 2,
+        "tpl": "今天已经花了 {expense_ds}",
+        "bold": false,
+        "rgb": "",
+        "color": "#ffffff",
+        "bgRgb": "indigo",
+        "bg": ""
+      }
+    ]
+  },
+  "models": {
+    "deepseek": {
+      "alert": {
+        "on": true,
+        "lines": [
+          {
+            "type": "text",
+            "text": "Sensei，您的DS余额只剩",
+            "size": 5,
+            "bold": true,
+            "row": 1
+          },
+          {
+            "type": "text",
+            "text": "¥{below}",
+            "size": 5,
+            "bold": true,
+            "rgb": "rouge",
+            "color": "",
+            "bgRgb": "",
+            "bg": "",
+            "row": 1
+          },
+          {
+            "type": "text",
+            "text": "啦~",
+            "size": 5,
+            "bold": true,
+            "row": 1
+          },
+          {
+            "type": "image",
+            "imgId": "bimg_yuuka_bill",
+            "size": 6,
+            "imgScale": 0.4
+          },
+          {
+            "type": "link",
+            "text": ">> 经 费 补 充 <<",
+            "url": "https://platform.deepseek.com/top_up",
+            "size": 1,
+            "color": "#ffffff",
+            "rgb": "",
+            "bgRgb": "indigo",
+            "bg": "",
+            "bold": true,
+            "ul": false
+          }
+        ],
+        "autoClose": false,
+        "ttlSec": 6,
+        "below": 10
+      },
+      "budget": {
+        "on": true,
+        "lines": [
+          {
+            "type": "text",
+            "text": "Sensei，今天的支出已经达到",
+            "size": 6,
+            "bold": true,
+            "row": 1
+          },
+          {
+            "type": "text",
+            "text": "¥{amount}",
+            "size": 7,
+            "bold": true,
+            "row": 1,
+            "rgb": "rouge",
+            "color": "",
+            "italic": false,
+            "bgRgb": "",
+            "bg": ""
+          },
+          {
+            "type": "text",
+            "text": "啦，请控制一下预算哦~",
+            "size": 6,
+            "bold": true,
+            "row": 1
+          }
+        ],
+        "autoClose": false,
+        "ttlSec": 6,
+        "amount": 10
+      }
+    }
+  }
+}

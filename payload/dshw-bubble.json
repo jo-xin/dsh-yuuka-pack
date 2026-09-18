@@ -1,0 +1,222 @@
+{
+  "v": 1,
+  "items": [
+    {
+      "kind": "custom",
+      "modules": [
+        {
+          "type": "text",
+          "text": "Sensei 的 DS 经费",
+          "size": 8,
+          "bold": true,
+          "rgb": "",
+          "ul": false,
+          "italic": false,
+          "color": ""
+        },
+        {
+          "type": "balance",
+          "size": 20,
+          "rgb": "indigo",
+          "color": "",
+          "tpl": "{balance_ds}",
+          "bgRgb": "",
+          "bg": "",
+          "fontFamily": "",
+          "bold": false
+        },
+        {
+          "type": "today",
+          "size": 4,
+          "color": "#9fb0d9",
+          "tpl": "今天已经花了 {expense_ds}"
+        },
+        {
+          "type": "peak",
+          "size": 2,
+          "peakColor": "#ffffff",
+          "offColor": "#ffffff",
+          "tpl": "{status}",
+          "peakRgb": "",
+          "offRgb": "",
+          "peakBgRgb": "rouge",
+          "peakBg": "",
+          "offBgRgb": "bamboo",
+          "offBg": "",
+          "peakStyle": "mini",
+          "bold": true,
+          "row": 4,
+          "fontFamily": "\"Microsoft YaHei\",sans-serif"
+        },
+        {
+          "type": "peak",
+          "size": 4,
+          "bold": true,
+          "peakColor": "#e0433f",
+          "offColor": "#2fa24c",
+          "peakRgb": "rouge",
+          "offRgb": "bamboo",
+          "peakStyle": "count",
+          "tpl": "{countdown}",
+          "row": 4,
+          "fontFamily": "",
+          "italic": false,
+          "ul": true
+        }
+      ]
+    },
+    {
+      "kind": "custom",
+      "modules": [
+        {
+          "type": "random",
+          "lines": [
+            {
+              "t": "Sensei，今天的API预算也要控制哦",
+              "w": 7
+            },
+            {
+              "t": "这个月的额度，可不能乱用呢",
+              "w": 6
+            },
+            {
+              "t": "Sensei，请确认一下消耗情况",
+              "w": 7
+            },
+            {
+              "t": "又增加了吗？我记下来了",
+              "w": 5
+            },
+            {
+              "t": "超出预算的话会很困扰的",
+              "w": 5
+            },
+            {
+              "t": "Sensei，花费记录要好好保存",
+              "w": 6
+            },
+            {
+              "t": "计算完成，今天还算稳定",
+              "w": 5
+            },
+            {
+              "t": "请不要突然增加调用次数哦",
+              "w": 6
+            },
+            {
+              "t": "预算表已经更新好了",
+              "w": 6
+            },
+            {
+              "t": "Sensei，这笔消耗有必要吗？",
+              "w": 4
+            },
+            {
+              "t": "又在测试新东西了吗？",
+              "w": 5
+            },
+            {
+              "t": "虽然可以理解，但要节制哦",
+              "w": 5
+            },
+            {
+              "t": "API余额还有，请放心使用",
+              "w": 6
+            },
+            {
+              "t": "不过也不能一直这样消耗",
+              "w": 5
+            },
+            {
+              "t": "Sensei，效率和成本都要考虑",
+              "w": 5
+            },
+            {
+              "t": "我会帮Sensei盯紧预算的",
+              "w": 7
+            },
+            {
+              "t": "这次的开销记录得很清楚",
+              "w": 5
+            },
+            {
+              "t": "请不要忘记每日限额哦",
+              "w": 6
+            },
+            {
+              "t": "Sensei，又熬夜调用了吗？",
+              "w": 3
+            },
+            {
+              "t": "这样下去预算会哭的",
+              "w": 2
+            },
+            {
+              "t": "这个消耗速度，有点危险",
+              "w": 3
+            },
+            {
+              "t": "Sensei，请停止无意义请求",
+              "w": 2
+            },
+            {
+              "t": "我不是在生气，只是担心",
+              "w": 3
+            },
+            {
+              "t": "浪费资源可是很严重的",
+              "w": 2
+            },
+            {
+              "t": "预算超支的话要反省哦",
+              "w": 2
+            },
+            {
+              "t": "Sensei，今天也要加油",
+              "w": 7
+            },
+            {
+              "t": "合理规划才能长久使用",
+              "w": 6
+            },
+            {
+              "t": "数据看起来还不错呢",
+              "w": 5
+            }
+          ],
+          "size": 8,
+          "_lastPick": 18
+        }
+      ]
+    },
+    {
+      "kind": "custom",
+      "modules": [
+        {
+          "type": "randimg",
+          "imgs": [
+            {
+              "imgId": "bimg_yuuka_bubble",
+              "w": 2
+            },
+            {
+              "imgId": "bimg_yuuka_face1",
+              "w": 3
+            },
+            {
+              "imgId": "bimg_yuuka_face2",
+              "w": 3
+            },
+            {
+              "imgId": "bimg_yuuka_face3",
+              "w": 3
+            }
+          ],
+          "imgScale": 1
+        }
+      ]
+    }
+  ],
+  "lib": [],
+  "tapAdvance": false
+}

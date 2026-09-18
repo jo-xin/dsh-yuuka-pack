@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "roles": [
+    {
+      "id": "role_yuuka",
+      "name": "优香",
+      "format": "apng",
+      "pinnedAt": null,
+      "createdAt": 1789736592281
+    }
+  ]
+}
