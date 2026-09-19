@@ -2,19 +2,19 @@
   "version": 1,
   "groups": [
     {
-      "id": "group_yuuka",
+      "id": "joxin_yuuka_click",
       "name": "优香",
-      "press": "audio_yuuka",
+      "press": "joxin_yuuka_voice",
       "release": "",
       "pinnedAt": null,
-      "createdAt": 1789736592281
+      "createdAt": 1789780077045
     }
   ],
   "fragments": [
     {
-      "id": "audio_yuuka",
+      "id": "joxin_yuuka_voice",
       "name": "优香·按下",
-      "createdAt": 1789736592281
+      "createdAt": 1789780077045
     }
   ]
 }

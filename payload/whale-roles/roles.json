@@ -2,11 +2,11 @@
   "version": 1,
   "roles": [
     {
-      "id": "role_yuuka",
+      "id": "joxin_yuuka_pajama",
       "name": "优香",
       "format": "apng",
       "pinnedAt": null,
-      "createdAt": 1789736592281
+      "createdAt": 1789780077045
     }
   ]
 }

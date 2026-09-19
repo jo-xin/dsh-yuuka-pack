@@ -196,19 +196,19 @@
           "type": "randimg",
           "imgs": [
             {
-              "imgId": "bimg_yuuka_bubble",
+              "imgId": "joxin_yuuka_bubble",
               "w": 2
             },
             {
-              "imgId": "bimg_yuuka_face1",
+              "imgId": "joxin_yuuka_face1",
               "w": 3
             },
             {
-              "imgId": "bimg_yuuka_face2",
+              "imgId": "joxin_yuuka_face2",
               "w": 3
             },
             {
-              "imgId": "bimg_yuuka_face3",
+              "imgId": "joxin_yuuka_face3",
               "w": 3
             }
           ],

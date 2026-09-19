@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 /**
  * 优香角色包 —— 安装脚本
- * 把 payload/ 里的素材释放到 DSH 数据目录，并【合并】而非覆盖现有索引，
- * 避免冲掉用户自己的角色 / 音效 / 泡泡图 / 用量设置。
+ *
+ * 设计原则：把「安装前是什么」原样记进 .yuuka-pack-state.json，
+ * 让卸载能够精确还原，而不是「值没变就删掉」这种猜法。
+ *
+ * 只写 DSH 数据目录下的 5 个位置，绝不整体覆盖账本。
  */
 import { existsSync, mkdirSync, readFileSync, writeFileSync, copyFileSync, readdirSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -13,6 +16,8 @@ const HERE    = dirname(fileURLToPath(import.meta.url));
 const ROOT    = dirname(HERE);
 const PAYLOAD = join(ROOT, 'payload');
 const DSH     = process.env.DSH_HOME || join(homedir(), '.dsh');
+const STATE   = join(DSH, '.yuuka-pack-state.json');
+const PACK_VERSION = '1.0.0';
 const STAMP   = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 
 const log  = (s) => console.log(s);
@@ -21,8 +26,8 @@ const warn = (s) => console.log('  \x1b[33m!\x1b[0m ' + s);
 const bad  = (s) => console.log('  \x1b[31m✗\x1b[0m ' + s);
 
 log('');
-log('优香角色包 · 安装');
-log('─'.repeat(52));
+log('优香角色包 v' + PACK_VERSION + ' · 安装');
+log('─'.repeat(54));
 log('  DSH 数据目录 : ' + DSH);
 
 if (!existsSync(DSH) || !existsSync(join(DSH, 'profiles'))) {
@@ -36,20 +41,27 @@ if (!existsSync(join(DSH, 'profiles', 'web', 'node_modules', 'dsh-whale-widget')
   warn('    dsh plugin --profile web add dsh-whale-widget');
   log('');
 }
+if (existsSync(STATE) && !process.argv.includes('--force')) {
+  warn('检测到本包已安装过（.yuuka-pack-state.json 存在）。');
+  warn('继续安装会覆盖那份「安装前状态」，卸载就只能还原到上一次安装前。');
+  warn('想继续就加 --force：  install.ps1 --force');
+  process.exit(2);
+}
 
 const readJson  = (p, fb) => { try { return JSON.parse(readFileSync(p, 'utf8')); } catch { return fb; } };
 const writeJson = (p, o) => { mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, JSON.stringify(o, null, 2), 'utf8'); };
 
-function mergeById(existing, incoming) {
-  const out = Array.isArray(existing) ? existing.slice() : [];
-  let added = 0, replaced = 0;
-  for (const item of incoming) {
-    const i = out.findIndex((x) => x && x.id === item.id);
-    if (i >= 0) { out[i] = item; replaced++; } else { out.push(item); added++; }
-  }
-  return { list: out, added, replaced };
-}
+// ── 状态记录器 ────────────────────────────────────────────────
+const state = {
+  version: 1,
+  pack: 'dsh-yuuka-pack',
+  packVersion: PACK_VERSION,
+  installedAt: new Date().toISOString(),
+  ids: {},
+  before: {},
+};
 
+// ── ①②③ 索引：记录被触碰条目的旧值，再合并 ─────────────────────
 function installIndexed(dirName, indexName, key, label) {
   log('');
   log(label);
@@ -62,40 +74,62 @@ function installIndexed(dirName, indexName, key, label) {
     copyFileSync(join(srcDir, f), join(dstDir, f));
     ok('复制 ' + f);
   }
+
   const inc = readJson(join(srcDir, indexName), {});
   const cur = readJson(join(dstDir, indexName), { version: 1 });
-  if (key === 'audio-split') {
-    const g = mergeById(cur.groups,    inc.groups    || []);
-    const f = mergeById(cur.fragments, inc.fragments || []);
-    writeJson(join(dstDir, indexName), { version: 1, groups: g.list, fragments: f.list });
-    ok(`片段：新增 ${f.added}，替换 ${f.replaced}，共 ${f.list.length} 个`);
-    ok(`音效组：新增 ${g.added}，替换 ${g.replaced}，共 ${g.list.length} 组`);
-  } else {
-    const m = mergeById(cur[key], inc[key] || []);
-    writeJson(join(dstDir, indexName), { version: 1, [key]: m.list });
-    ok(`索引合并：新增 ${m.added}，替换 ${m.replaced}，共 ${m.list.length} 项`);
+
+  const groups = key === 'audio-split'
+    ? [['groups', inc.groups || []], ['fragments', inc.fragments || []]]
+    : [[key, inc[key] || []]];
+
+  for (const [k, incoming] of groups) {
+    const existing = Array.isArray(cur[k]) ? cur[k] : [];
+    const beforeMap = {};
+    for (const item of incoming) {
+      const prev = existing.find((x) => x && x.id === item.id);
+      beforeMap[item.id] = prev === undefined ? null : prev;
+    }
+    state.before[k] = Object.assign(state.before[k] || {}, beforeMap);
+    state.ids[k] = incoming.map((x) => x.id);
+
+    const out = existing.slice();
+    let added = 0, replaced = 0;
+    for (const item of incoming) {
+      const i = out.findIndex((x) => x && x.id === item.id);
+      if (i >= 0) { out[i] = item; replaced++; } else { out.push(item); added++; }
+    }
+    cur[k] = out;
+    ok(`${k}: 新增 ${added}，替换 ${replaced}，共 ${out.length} 项`);
   }
+  cur.version = 1;
+  writeJson(join(dstDir, indexName), cur);
 }
 
 installIndexed('whale-roles',       'roles.json',       'roles',       '① 角色');
 installIndexed('whale-audio',       'audio.json',       'audio-split', '② 音效');
 installIndexed('whale-bubble-imgs', 'bubble-imgs.json', 'images',      '③ 泡泡图库');
 
+// ── ④ 点击序列 ────────────────────────────────────────────────
 log('');
 log('④ 点击序列（台词 + 表情包）');
 {
   const dst = join(DSH, '.dshw-bubble.json');
-  if (existsSync(dst)) {
+  const prev = existsSync(dst) ? readJson(dst, null) : null;
+  state.before.bubbleConfig = prev;
+  if (prev !== null) {
     const bak = dst + '.bak-' + STAMP;
     copyFileSync(dst, bak);
-    warn('已存在自定义配置，先备份到：' + bak);
+    ok('已备份原配置：' + bak);
+  } else {
+    ok('原先没有点击序列配置');
   }
   copyFileSync(join(PAYLOAD, 'dshw-bubble.json'), dst);
   ok('写入 .dshw-bubble.json');
 }
 
+// ── ⑤ 用量设置 ────────────────────────────────────────────────
 log('');
-log('⑤ 用量设置（余额预警 / 今日预算）');
+log('⑤ 用量设置（余额预警 / 今日预算 / 每轮消耗）');
 {
   const usagePath = join(DSH, '.dshw-usage.json');
   const srcSet = readJson(join(PAYLOAD, 'dshw-usage-settings.json'), null);
@@ -114,26 +148,34 @@ log('⑤ 用量设置（余额预警 / 今日预算）');
       copyFileSync(usagePath, bak);
       ok('账本已备份：' + bak);
 
-      const b = { todayUsage: led.todayUsage, ev: (led.events || []).length, hi: JSON.stringify(led.history || {}) };
+      const b = {
+        todayUsage: led.todayUsage,
+        ev: (led.events || []).length,
+        hi: JSON.stringify(led.history || {}),
+      };
 
       led.settings = (led.settings && typeof led.settings === 'object') ? led.settings : {};
+      state.before.usageSettings = {};
       let written = 0;
+
       for (const [k, v] of Object.entries(srcSet)) {
         if (k === 'models') {
           led.settings.models = (led.settings.models && typeof led.settings.models === 'object') ? led.settings.models : {};
           for (const [mid, mv] of Object.entries(v)) {
             led.settings.models[mid] = (led.settings.models[mid] && typeof led.settings.models[mid] === 'object') ? led.settings.models[mid] : {};
             for (const [mk, mvv] of Object.entries(mv)) {
-              const had = led.settings.models[mid][mk] !== undefined;
+              const prev = led.settings.models[mid][mk];
+              state.before.usageSettings['models.' + mid + '.' + mk] = prev === undefined ? null : prev;
               led.settings.models[mid][mk] = mvv;
-              ok(`settings.models.${mid}.${mk} 已${had ? '替换' : '写入'}`);
+              ok('settings.models.' + mid + '.' + mk + ' 已写入');
               written++;
             }
           }
         } else {
-          const had = led.settings[k] !== undefined;
+          const prev = led.settings[k];
+          state.before.usageSettings[k] = prev === undefined ? null : prev;
           led.settings[k] = v;
-          ok(`settings.${k} 已${had ? '替换' : '写入'}`);
+          ok('settings.' + k + ' 已写入');
           written++;
         }
       }
@@ -141,7 +183,8 @@ log('⑤ 用量设置（余额预警 / 今日预算）');
       writeJson(usagePath, led);
 
       const a = readJson(usagePath, {});
-      const same = a.todayUsage === b.todayUsage && (a.events || []).length === b.ev
+      const same = a.todayUsage === b.todayUsage
+                && (a.events || []).length === b.ev
                 && JSON.stringify(a.history || {}) === b.hi;
       if (same) ok('账本数据复核通过（todayUsage / history / events 未变）');
       else bad('账本数据复核不一致！请用备份恢复：' + bak);
@@ -149,7 +192,7 @@ log('⑤ 用量设置（余额预警 / 今日预算）');
   }
 }
 
-
+// ── ⑥ 音效组选择 ──────────────────────────────────────────────
 log('');
 log('⑥ 音效组选择');
 {
@@ -169,24 +212,31 @@ log('⑥ 音效组选择');
       bad('.dshw-size.json 解析失败，跳过。');
     } else {
       const cur = cfg.soundSet;
+      state.before.soundSet = cur === undefined ? null : cur;
       if (cur === want) {
-        ok('音效组已经是「优香」，无需改动。');
+        ok('音效组已经是本包的，无需改动。');
       } else if (cur === undefined || PRESETS.includes(cur)) {
         const bak = sizePath + '.bak-' + STAMP;
         copyFileSync(sizePath, bak);
         cfg.soundSet = want;
         writeJson(sizePath, cfg);
-        ok(`音效组已选中：${cur === undefined ? '(未设置)' : cur}  ->  ${want}`);
+        ok('音效组已选中：' + (cur === undefined ? '(未设置)' : cur) + '  ->  ' + want);
       } else {
-        warn(`你当前用的是自定义音效组「${cur}」，保留不动。`);
-        warn(`想换成「优香」请到 主菜单 → 音效 里选。`);
+        warn('你当前用的是自定义音效组「' + cur + '」，保留不动。');
+        warn('想换成本包的请到 主菜单 → 音效 里选。');
       }
     }
   }
 }
 
+// ── 落状态文件 ────────────────────────────────────────────────
+writeJson(STATE, state);
 log('');
-log('─'.repeat(52));
+ok('安装前状态已记录 → ' + STATE);
+log('  卸载时靠它精确还原，包括你原来自己的角色 / 音效 / 气泡 / 设置。');
+
+log('');
+log('─'.repeat(54));
 ok('装完了。');
 log('');
 log('接下来：');
