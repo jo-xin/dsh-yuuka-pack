@@ -4,6 +4,14 @@
     {
       "id": "joxin_yuuka_click",
       "name": "优香",
+      "press": "joxin_yuuka_voice_short",
+      "release": "",
+      "pinnedAt": null,
+      "createdAt": 1789886496159
+    },
+    {
+      "id": "joxin_yuuka_click_long",
+      "name": "优香（长）",
       "press": "joxin_yuuka_voice",
       "release": "",
       "pinnedAt": null,
@@ -12,8 +20,13 @@
   ],
   "fragments": [
     {
+      "id": "joxin_yuuka_voice_short",
+      "name": "优香·按下（短）",
+      "createdAt": 1789886496159
+    },
+    {
       "id": "joxin_yuuka_voice",
-      "name": "优香·按下",
+      "name": "优香（长）",
       "createdAt": 1789780077045
     }
   ]
