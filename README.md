@@ -10,7 +10,7 @@
 
 > 🔊 建议开启声音观看效果。
 
-https://github.com/user-attachments/assets/117b733e-3144-4317-9291-1c9f248e732f
+https://github.com/user-attachments/assets/8eb0d1ca-3de6-486b-8b77-935faa63efb2
 
 > 注：视频中的背景皮肤由
 > [@linxin666/dsh-client-ui-skin-center](https://github.com/linxin666/dsh-client-ui-skin-center)
