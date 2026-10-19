@@ -111,6 +111,68 @@
       }
     ]
   },
+  "events": {
+    "question": {
+      "on": true,
+      "soundOn": false,
+      "sel": "frag:ask_a",
+      "vol": 1,
+      "autoClose": true,
+      "ttlSec": 180,
+      "bubbleOn": true,
+      "lines": [
+        {
+          "type": "session",
+          "size": 10,
+          "bold": true,
+          "tpl": "[ {session} ]",
+          "len": 5,
+          "rgb": "champagne",
+          "color": ""
+        },
+        {
+          "type": "text",
+          "text": "Sensei，能稍微占用您一点时间吗？",
+          "size": 7,
+          "bold": true,
+          "bgRgb": "",
+          "bg": "",
+          "rgb": "indigo",
+          "color": ""
+        }
+      ]
+    },
+    "approval": {
+      "on": true,
+      "soundOn": false,
+      "sel": "frag:approve_a",
+      "vol": 1,
+      "autoClose": true,
+      "ttlSec": 180,
+      "bubbleOn": true,
+      "lines": [
+        {
+          "type": "session",
+          "size": 10,
+          "bold": true,
+          "tpl": "[ {session} ]",
+          "len": 5,
+          "rgb": "champagne",
+          "color": ""
+        },
+        {
+          "type": "text",
+          "text": "Sensei，在等您授权哦",
+          "size": 7,
+          "bold": true,
+          "bgRgb": "",
+          "bg": "",
+          "rgb": "indigo",
+          "color": ""
+        }
+      ]
+    }
+  },
   "models": {
     "deepseek": {
       "alert": {

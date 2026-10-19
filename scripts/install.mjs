@@ -17,7 +17,7 @@ const ROOT    = dirname(HERE);
 const PAYLOAD = join(ROOT, 'payload');
 const DSH     = process.env.DSH_HOME || join(homedir(), '.dsh');
 const STATE   = join(DSH, '.yuuka-pack-state.json');
-const PACK_VERSION = '1.0.0';
+const PACK_VERSION = '1.2.0';
 const STAMP   = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 
 const log  = (s) => console.log(s);
@@ -170,6 +170,15 @@ log('⑤ 用量设置（余额预警 / 今日预算 / 每轮消耗）');
               ok('settings.models.' + mid + '.' + mk + ' 已写入');
               written++;
             }
+          }
+        } else if (k === 'events') {
+          led.settings.events = (led.settings.events && typeof led.settings.events === 'object') ? led.settings.events : {};
+          for (const [kind, kv] of Object.entries(v)) {
+            const prev = led.settings.events[kind];
+            state.before.usageSettings['events.' + kind] = prev === undefined ? null : prev;
+            led.settings.events[kind] = Object.assign({}, (prev && typeof prev === 'object') ? prev : {}, kv);
+            ok('settings.events.' + kind + ' 已合并');
+            written++;
           }
         } else {
           const prev = led.settings[k];

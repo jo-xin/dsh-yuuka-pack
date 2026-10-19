@@ -158,6 +158,12 @@ console.log('⑤ 用量设置');
           if (!box) continue;
           if (prev === null || prev === undefined) { delete box[mk]; removed++; ok(`${path} 原先没有 → 已删除`); }
           else { box[mk] = prev; restored++; ok(`${path} 已还原`); }
+        } else if (parts[0] === 'events' && parts.length === 2) {
+          const kind = parts[1];
+          const box = led.settings.events;
+          if (!box) continue;
+          if (prev === null || prev === undefined) { delete box[kind]; removed++; ok(`${path} 原先没有 → 已删除`); }
+          else { box[kind] = prev; restored++; ok(`${path} 已还原`); }
         } else {
           if (prev === null || prev === undefined) { delete led.settings[path]; removed++; ok(`${path} 原先没有 → 已删除`); }
           else { led.settings[path] = prev; restored++; ok(`${path} 已还原`); }
@@ -169,6 +175,12 @@ console.log('⑤ 用量设置');
           if (led.settings.models[mid] && Object.keys(led.settings.models[mid]).length === 0) delete led.settings.models[mid];
         }
         if (Object.keys(led.settings.models).length === 0) delete led.settings.models;
+      }
+      if (led.settings.events) {
+        for (const kind of Object.keys(led.settings.events)) {
+          if (!led.settings.events[kind]) delete led.settings.events[kind];
+        }
+        if (Object.keys(led.settings.events).length === 0) delete led.settings.events;
       }
       writeJson(usagePath, led);
 
